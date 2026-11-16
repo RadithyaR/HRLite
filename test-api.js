@@ -20,18 +20,18 @@ import {
 // };
 
 //employee detail
-// const testGetDetailAPI = async () => {
-//   try {
-//     const employee = await getEmployeeDetailApi(2);
+const testGetDetailAPI = async () => {
+  try {
+    const employee = await getEmployeeDetailApi(2);
 
-//     console.log("id:", employee.id);
-//     console.log("Nama:", employee.firstName, employee.lastName);
-//     console.log("Email:", employee.email);
-//     console.log("Departemen:", employee.company.department);
-//   } catch (error) {
-//     console.error("Gagal mendapatkan data karyawan: ", error.message);
-//   }
-// };
+    console.log("id:", employee.id);
+    console.log("Nama:", employee.firstName, employee.lastName);
+    console.log("Email:", employee.email);
+    console.log("Departemen:", employee.company.department);
+  } catch (error) {
+    console.error("Gagal mendapatkan data karyawan: ", error.message);
+  }
+};
 
 //create employee
 // const payload = {
@@ -69,14 +69,14 @@ import {
 // };
 
 //Delete data
-const testAPI = async () => {
-  try {
-    const employee = await deleteEmployeeApi(2);
-    console.log(employee);
-  } catch (error) {
-    console.error("Gagal update data karyawan: ", error.message);
-  }
-};
+// const testAPI = async () => {
+//   try {
+//     const employee = await deleteEmployeeApi(2);
+//     console.log(employee);
+//   } catch (error) {
+//     console.error("Gagal update data karyawan: ", error.message);
+//   }
+// };
 
-// testGetDetailAPI();
-testAPI();
+testGetDetailAPI();
+// testAPI();

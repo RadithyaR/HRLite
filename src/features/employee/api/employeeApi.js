@@ -5,6 +5,9 @@ export const getListEmployeesApi = async (limit, skip) => {
     const response = await fetch(
       `${BASE_URL}/users?limit=${limit}&skip=${skip}`,
     );
+    if (!response.ok) {
+      throw new Error("Tidak ada karyawan yang ditemukan");
+    }
     const data = await response.json();
     return data;
   } catch (error) {
@@ -23,7 +26,23 @@ export const getEmployeeDetailApi = async (id) => {
 
     return data;
   } catch (error) {
-    console.error("Gagal mendapatkan data::", error.message);
+    console.error("Gagal mendapatkan data:", error.message);
+    throw error;
+  }
+};
+
+export const searchEmployeeApi = async (keyword, limit, skip) => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/users/search?q=${encodeURIComponent(keyword)}&limit=${limit}&skip=${skip}`,
+    );
+    if (!response.ok) {
+      throw new Error("Gagal mencari karyawan");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Gagal mencari data:", error.message);
     throw error;
   }
 };
