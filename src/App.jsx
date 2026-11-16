@@ -1,15 +1,32 @@
-import { useState } from "react";
-import heroImg from "./assets/hero.png";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
+import { BrowserRouter, Navigate, useRoutes } from "react-router-dom";
+import { employeeRoutes } from "./pages/EmployeePage";
+import { Children, Suspense } from "react";
+import MainLayout from "./components/layout/MainLayout";
 
+const routes = [
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/employee" replace />,
+      },
+      ...employeeRoutes,
+    ],
+  },
+];
+
+function AppRoutes() {
+  return useRoutes(routes);
+}
 function App() {
   return (
-    <>
-      <section id="center"></section>
-
-      <section id="spacer"></section>
-    </>
+    <BrowserRouter>
+      <Suspense fallback={<p>Loading...</p>}>
+        <AppRoutes />
+      </Suspense>
+    </BrowserRouter>
   );
 }
 
