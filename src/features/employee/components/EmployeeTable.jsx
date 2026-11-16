@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Link } from "react-router-dom";
 
 function EmployeeTable({ listEmployee }) {
   return (
@@ -37,7 +38,14 @@ function EmployeeTable({ listEmployee }) {
             <TableCell>{employee.email}</TableCell>
             <TableCell>{employee.company?.department ?? "-"}</TableCell>
             <TableCell>{employee.company?.title ?? "-"}</TableCell>
-            <TableCell>Actions</TableCell>
+            <TableCell>
+              <Link
+                to={`/employee/${employee.id}`}
+                className="inline-flex h-8 items-center rounded-md border px-3 text-sm hover:bg-muted"
+              >
+                Detail
+              </Link>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
