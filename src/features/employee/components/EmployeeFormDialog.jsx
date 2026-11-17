@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import * as yup from "yup";
+import { toast } from "sonner";
 
 const employeeSchema = yup
   .object({
@@ -108,8 +109,10 @@ function EmployeeFormDialog() {
 
       if (editingEmployee) {
         await onUpdateEmployee(editingEmployee.id, payload);
+        toast.success("Data Karyawan Berhasil Diperbarui");
       } else {
         await onCreateEmployee(payload);
+        toast.success("Data Karyawan Berhasil Ditambah");
       }
 
       onCloseForm();
@@ -132,7 +135,7 @@ function EmployeeFormDialog() {
           }
         });
       } else {
-        console.error("Gagal menyimpan karyawan:", error.message);
+        toast.error("Gagal menyimpan data karyawan");
       }
     }
   };
@@ -255,7 +258,7 @@ function EmployeeFormDialog() {
                   <SelectValue placeholder="Pilih Departement" />
                 </SelectTrigger>
 
-                <SelectContent>
+                <SelectContent className="z-50 max-h-60 overflow-y-auto rounded-md border bg-white text-gray-900 shadow-lg">
                   <SelectItem value="Engineering">Engineering</SelectItem>
                   <SelectItem value="Support">Support</SelectItem>
                   <SelectItem value="Research and Development">
@@ -284,7 +287,9 @@ function EmployeeFormDialog() {
                 </p>
               )}
             </div>
-            <Button type="submit">Simpan</Button>
+            <Button type="submit" variant="outline">
+              Simpan
+            </Button>
           </form>
         </div>
       </DialogContent>
