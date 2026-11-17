@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useEmployeeStore } from "../store/useEmployeeStore";
 import EmployeeTable from "./EmployeeTable";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -6,9 +6,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
 import EmployeeFormDialog from "./EmployeeFormDialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function Index() {
   const listEmployee = useEmployeeStore((state) => state.listEmployee);
+  const selectedDepartment = useEmployeeStore(
+    (state) => state.selectedDepartment,
+  );
   const isLoading = useEmployeeStore((state) => state.isLoading);
   const hasError = useEmployeeStore((state) => state.hasError);
   const page = useEmployeeStore((state) => state.page);
@@ -20,6 +30,9 @@ function Index() {
   const keyword = useEmployeeStore((state) => state.keyword);
   const onSetKeyword = useEmployeeStore((state) => state.onSetKeyword);
   const onOpenForm = useEmployeeStore((state) => state.onOpenForm);
+  const onSetSelectedDepartment = useEmployeeStore(
+    (state) => state.onSetSelectedDepartment,
+  );
 
   useEffect(() => {
     onSetKeyword(debouncedKeyword);
@@ -33,6 +46,26 @@ function Index() {
     onGetListEmployee();
   }, [page, keyword, onGetListEmployee]);
 
+  const listFilteredEmployee = useMemo(() => {
+    if (selectedDepartment === "all") {
+      return listEmployee;
+    }
+
+    return listEmployee.filter(
+      (employee) => employee.company?.department === selectedDepartment,
+    );
+  }, [listEmployee, selectedDepartment]);
+
+  const listDepartment = useMemo(() => {
+    return [
+      ...new Set(
+        listEmployee
+          .map((employee) => employee.company?.department)
+          .filter(Boolean),
+      ),
+    ];
+  }, [listEmployee]);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -43,13 +76,34 @@ function Index() {
         </Button>
       </div>
 
-      <Input
-        type="search"
-        placeholder="Cari karyawan..."
-        value={searchInput}
-        onChange={(event) => setSearchInput(event.target.value)}
-        className="max-w-sm"
-      />
+      <div className="flex items-center justify-between">
+        <Input
+          type="search"
+          placeholder="Cari karyawan..."
+          value={searchInput}
+          onChange={(event) => setSearchInput(event.target.value)}
+          className="max-w-sm"
+        />
+
+        <Select
+          value={selectedDepartment}
+          onValueChange={onSetSelectedDepartment}
+        >
+          <SelectTrigger className="w-52">
+            <SelectValue placeholder="Filter departemen" />
+          </SelectTrigger>
+
+          <SelectContent className="z-50 bg-white text-gray-900">
+            <SelectItem value="all">Semua Departemen</SelectItem>
+
+            {listDepartment.map((department) => (
+              <SelectItem key={department} value={department}>
+                {department}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
       <EmployeeFormDialog />
 
@@ -66,7 +120,7 @@ function Index() {
           <p className="text-red-500">Gagal memuat data karyawan.</p>
           <Button onClick={onGetListEmployee}>Coba Lagi</Button>
         </div>
-      ) : listEmployee.length === 0 ? (
+      ) : listFilteredEmployee.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 py-16">
           <h2 className="text-lg font-semibold">Tidak ada karyawan</h2>
           <p className="text-sm text-muted-foreground">
@@ -75,7 +129,7 @@ function Index() {
         </div>
       ) : (
         <>
-          <EmployeeTable listEmployee={listEmployee} />
+          <EmployeeTable listEmployee={listFilteredEmployee} />
 
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
