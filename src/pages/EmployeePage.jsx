@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import { lazy } from "react";
 
 const EmployeeList = lazy(() => import("@/features/employee/components/index"));
 const EmployeeDetail = lazy(

@@ -22,7 +22,7 @@ function DeleteEmployeeDialog({ open, onOpenChange, employee }) {
 
       toast.success("Karyawan berhasil dihapus");
       onOpenChange(false);
-    } catch (error) {
+    } catch {
       toast.error("Gagal menghapus karyawan");
     }
   };

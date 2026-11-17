@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useEmployeeStore } from "../store/useEmployeeStore";
 import {
   Dialog,
@@ -65,12 +65,16 @@ function EmployeeFormDialog() {
   const isFormOpen = useEmployeeStore((state) => state.isFormOpen);
   const onCloseForm = useEmployeeStore((state) => state.onCloseForm);
   const editingEmployee = useEmployeeStore((state) => state.editingEmployee);
+  const onCreateEmployee = useEmployeeStore((state) => state.onCreateEmployee);
+  const onUpdateEmployee = useEmployeeStore((state) => state.onUpdateEmployee);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [age, setAge] = useState("");
-  const [department, setDepartment] = useState("");
+  const [firstName, setFirstName] = useState(editingEmployee?.firstName ?? "");
+  const [lastName, setLastName] = useState(editingEmployee?.lastName ?? "");
+  const [email, setEmail] = useState(editingEmployee?.email ?? "");
+  const [age, setAge] = useState(editingEmployee?.age?.toString() ?? "");
+  const [department, setDepartment] = useState(
+    editingEmployee?.company?.department ?? "",
+  );
   const [nameError, setNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [ageError, setAgeError] = useState("");
@@ -139,30 +143,6 @@ function EmployeeFormDialog() {
       }
     }
   };
-
-  useEffect(() => {
-    setNameError("");
-    setEmailError("");
-    setAgeError("");
-    setDepartmentError("");
-    if (editingEmployee) {
-      setFirstName(editingEmployee.firstName ?? "");
-      setLastName(editingEmployee.lastName ?? "");
-      setEmail(editingEmployee.email ?? "");
-      setAge(editingEmployee.age?.toString() ?? "");
-      setDepartment(editingEmployee.company?.department ?? "");
-    } else {
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setAge("");
-      setDepartment("");
-    }
-  }, [editingEmployee, isFormOpen]);
-
-  const onCreateEmployee = useEmployeeStore((state) => state.onCreateEmployee);
-
-  const onUpdateEmployee = useEmployeeStore((state) => state.onUpdateEmployee);
 
   return (
     <Dialog

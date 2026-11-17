@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useEmployeeStore } from "../store/useEmployeeStore";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,7 +36,7 @@ function EmployeeDetail() {
     return (
       <div className="flex flex-col items-center gap-4 py-12">
         <p className="text-red-500">Gagal memuat detail karyawan.</p>
-        <Button onClick={() => getEmployeeDetail(id)}>Coba Lagi</Button>
+        <Button onClick={() => onGetEmployeeDetail(id)}>Coba Lagi</Button>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useEmployeeStore } from "../store/useEmployeeStore";
 import EmployeeTable from "./EmployeeTable";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -33,6 +33,7 @@ function Index() {
   const onSetSelectedDepartment = useEmployeeStore(
     (state) => state.onSetSelectedDepartment,
   );
+  const isFormOpen = useEmployeeStore((state) => state.isFormOpen);
 
   useEffect(() => {
     onSetKeyword(debouncedKeyword);
@@ -105,7 +106,7 @@ function Index() {
         </Select>
       </div>
 
-      <EmployeeFormDialog />
+      {isFormOpen && <EmployeeFormDialog />}
 
       {isLoading ? (
         <div className="space-y-4">

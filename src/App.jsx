@@ -1,8 +1,8 @@
 import { BrowserRouter, Navigate, useRoutes } from "react-router-dom";
 import { employeeRoutes } from "./pages/EmployeePage";
-import { Children, Suspense } from "react";
 import MainLayout from "./components/layout/MainLayout";
 import { Toaster } from "@/components/ui/sonner";
+import { dashboardRoutes } from "./pages/DashboardPage";
 
 const routes = [
   {
@@ -14,6 +14,7 @@ const routes = [
         element: <Navigate to="/employee" replace />,
       },
       ...employeeRoutes,
+      ...dashboardRoutes,
     ],
   },
 ];
@@ -24,9 +25,8 @@ function AppRoutes() {
 function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<p>Loading...</p>}>
-        <AppRoutes />
-      </Suspense>
+      <AppRoutes />
+
       <Toaster position="top-right" richColors closeButton />
     </BrowserRouter>
   );

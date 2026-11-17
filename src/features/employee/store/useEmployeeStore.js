@@ -42,7 +42,7 @@ export const useEmployeeStore = create((set, get) => ({
         data = await getListEmployeesApi(limit, skip);
       }
       set({ listEmployee: data.users, total: data.total });
-    } catch (hasError) {
+    } catch {
       set({ hasError: true });
     } finally {
       set({ isLoading: false });
@@ -56,7 +56,7 @@ export const useEmployeeStore = create((set, get) => ({
       const data = await getEmployeeDetailApi(id);
 
       set({ selectedEmployee: data });
-    } catch (hasError) {
+    } catch {
       set({ hasError: true });
     } finally {
       set({ isLoading: false });
@@ -82,31 +82,26 @@ export const useEmployeeStore = create((set, get) => ({
 
   onUpdateEmployee: async (id, payload) => {
     const employee = get().listEmployee.find((item) => item.id === id);
+    let updatedEmployee;
 
-    try {
-      let updatedEmployee;
-
-      if (employee?.isLocal) {
-        updatedEmployee = payload;
-      } else {
-        updatedEmployee = await updateEmployeeApi(id, payload);
-      }
-
-      set((state) => ({
-        listEmployee: state.listEmployee.map((employee) => {
-          if (employee.id === id) {
-            return {
-              ...employee,
-              ...updatedEmployee,
-            };
-          }
-
-          return employee;
-        }),
-      }));
-    } catch (error) {
-      throw error;
+    if (employee?.isLocal) {
+      updatedEmployee = payload;
+    } else {
+      updatedEmployee = await updateEmployeeApi(id, payload);
     }
+
+    set((state) => ({
+      listEmployee: state.listEmployee.map((employee) => {
+        if (employee.id === id) {
+          return {
+            ...employee,
+            ...updatedEmployee,
+          };
+        }
+
+        return employee;
+      }),
+    }));
   },
 
   onDeleteEmployee: async (id) => {
