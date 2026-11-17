@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
+import EmployeeFormDialog from "./EmployeeFormDialog";
 
 function Index() {
   const listEmployee = useEmployeeStore((state) => state.listEmployee);
@@ -18,6 +19,7 @@ function Index() {
   const debouncedKeyword = useDebounce(searchInput, 500);
   const keyword = useEmployeeStore((state) => state.keyword);
   const onSetKeyword = useEmployeeStore((state) => state.onSetKeyword);
+  const onOpenForm = useEmployeeStore((state) => state.onOpenForm);
 
   useEffect(() => {
     onSetKeyword(debouncedKeyword);
@@ -33,7 +35,11 @@ function Index() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Daftar Karyawan</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Daftar Karyawan</h1>
+
+        <Button onClick={() => onOpenForm()}>Tambah Karyawan</Button>
+      </div>
 
       <Input
         type="search"
@@ -42,6 +48,8 @@ function Index() {
         onChange={(event) => setSearchInput(event.target.value)}
         className="max-w-sm"
       />
+
+      <EmployeeFormDialog />
 
       {isLoading ? (
         <div className="space-y-4">

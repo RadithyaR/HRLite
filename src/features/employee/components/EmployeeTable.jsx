@@ -7,8 +7,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Link } from "react-router-dom";
+import { useEmployeeStore } from "../store/useEmployeeStore";
+import { Button } from "@/components/ui/button";
 
 function EmployeeTable({ listEmployee }) {
+  const onOpenForm = useEmployeeStore((state) => state.onOpenForm);
   return (
     <Table>
       <TableHeader>
@@ -39,12 +42,21 @@ function EmployeeTable({ listEmployee }) {
             <TableCell>{employee.company?.department ?? "-"}</TableCell>
             <TableCell>{employee.company?.title ?? "-"}</TableCell>
             <TableCell>
-              <Link
-                to={`/employee/${employee.id}`}
-                className="inline-flex h-8 items-center rounded-md border px-3 text-sm hover:bg-muted"
-              >
-                Detail
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link
+                  to={`/employee/${employee.id}`}
+                  className="inline-flex h-8 items-center rounded-md border px-3 text-sm hover:bg-muted"
+                >
+                  Detail
+                </Link>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onOpenForm(employee)}
+                >
+                  Edit
+                </Button>
+              </div>
             </TableCell>
           </TableRow>
         ))}
