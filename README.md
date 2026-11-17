@@ -1,16 +1,55 @@
-# React + Vite
+# HRLite — Aplikasi Manajemen Karyawan
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Menjalankan Proyek Secara Lokal
 
-Currently, two official plugins are available:
+Bun telah terpasang pada perangkat.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Clone repository ini dan masuk ke direktori proyek:
 
-## React Compiler
+2. Instal dependensi:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+   ```bash
+   bun install
+   ```
 
-## Expanding the ESLint configuration
+3. Jalankan development server:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+   ```bash
+   bun dev
+   ```
+
+4. Buka alamat localhost yang ditampilkan Vite pada terminal (umumnya `http://localhost:5173`).
+
+## Fitur
+
+- **Daftar karyawan** dengan foto, nama lengkap, email, departemen, jabatan, dan aksi.
+- **Pagination** 10 karyawan per halaman.
+- **Pencarian**.
+- **Detail karyawan** untuk melihat informasi karyawan.
+- **Tambah dan ubah karyawan**.
+- **Validasi form**.
+- **Notifikasi**.
+- **Hapus karyawan**.
+- **Filter departemen**.
+- **Dashboard** dengan total karyawan, jumlah departemen, rata-rata usia, dan grafik jumlah karyawan per departemen.
+
+## Kendala yang Ditemui
+
+- DummyJSON tidak menyimpan hasil CRUD secara permanen
+- Data baru memperoleh ID yang tidak tersedia di DummyJSON
+- Permintaan pencarian beruntun ketika pengguna mengetik
+- Refresh pada route React Router di deployment Vercel mengembalikan 404
+
+## Keputusan Desain State Management
+
+- **Store fitur:** Digunakan untuk menyimpan state yang berkaitan dengan fitur tertentu, seperti data karyawan, pagination, filter, dan dashboard.
+- **Global store:** Digunakan untuk state yang dibutuhkan oleh beberapa fitur atau komponen.
+- **useState:** Digunakan untuk state lokal yang hanya diperlukan oleh satu komponen, seperti nilai input form.
+  Pembagian ini dilakukan agar pengelolaan state lebih terstruktur dan tidak menyimpan semua state di satu tempat.
+
+## Deployment
+
+- Platform: Vercel
+- URL aplikasi: https://hrlite-seven.vercel.app/
+
+Dibuat untuk keperluan studi kasus Frontend Developer Intern
